@@ -18,6 +18,7 @@ Simply running Skyhook with no arguments gives the user a list of available comm
     
     skyhook search [file name] - Search history for entries matching [file name]
     skyhook delete [hash] - Delete entries specified by [hash] from history
+    skyhook save [hash] - Save a single history entry specified by [hash] to the local directory
     
     skyhook import [path] - Import history from a location specified by [path]
     skyhook export [path] - Export history to a location specified by [path]
@@ -41,7 +42,6 @@ pip3 install --user ipfs-api
 ```
 
 # Roadmap
--   Make history management easier
 -   Port Skyhook to Windows
 -   Create a GUI version of Skyhook
 
