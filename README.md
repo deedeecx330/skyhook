@@ -41,6 +41,7 @@ pip3 install --user ipfs-api
 ```
 
 # Roadmap
+-   Make history management easier
 -   Port Skyhook to Windows
 -   Create a GUI version of Skyhook
 
