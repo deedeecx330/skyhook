@@ -4,8 +4,8 @@ Send and receive files securely through the IPFS network
 # Overview
 Skyhook is a command-line tool that allows the user to securely share files over the IPFS network.
 It features:
--   Automatic file encryption and decryption using AES-256
--   Local history of file names, hashes, keys and dates which can be both imported and exported
+-   Seamless file encryption and decryption using AES-256
+-   Local history of file names, hashes, keys and dates which can be both imported and exported easily
 -   Ability to run off both local and remote IPFS nodes
 
 # Usage
