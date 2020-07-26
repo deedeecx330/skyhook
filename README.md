@@ -1,5 +1,5 @@
 # Skyhook
-Send and receive files securely through the IPFS network
+Send and recieve files securely through the IPFS network
 
 # Overview
 Skyhook is a command-line tool that allows the user to securely share files over the IPFS network.
