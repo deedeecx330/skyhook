@@ -44,6 +44,3 @@ pip3 install --user ipfs-api
 # Roadmap
 -   Port Skyhook to Windows
 -   Create a GUI version of Skyhook
-
-# Final Note
-Current iteration of Skyhook is also hosted on IPFS itself. It is available here: https://ipfs.io/ipfs/QmPumiCCYXPCJVuaQBgTknv8znhxzMcetL6WcTSBYKVMgg
