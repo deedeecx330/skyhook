@@ -9,7 +9,7 @@ It features:
 -   Ability to run off both local and remote IPFS nodes
 
 # Usage
-Simply running skyhook with no arguments gives the user a list of available commands:
+Simply running Skyhook with no arguments gives the user a list of available commands:
 
 ```
     skyhook clear history - Delete everything from history
@@ -28,7 +28,7 @@ Simply running skyhook with no arguments gives the user a list of available comm
 ```
 
 # Requirements
-The only requirement for running skyhook is the ipfs-api module for Python 3, which can be installed by running:
+The only requirement for running Skyhook is the ipfs-api module for Python 3, which can be installed by running:
 
 ```
 pip3 install ipfs-api
@@ -46,4 +46,4 @@ pip3 install --user ipfs-api
 -   Create a GUI version of Skyhook
 
 # Final Note
-Skyhook is also hosted on IPFS itself. It is available here: https://ipfs.io/ipfs/QmPumiCCYXPCJVuaQBgTknv8znhxzMcetL6WcTSBYKVMgg
+Current iteration of Skyhook is also hosted on IPFS itself. It is available here: https://ipfs.io/ipfs/QmPumiCCYXPCJVuaQBgTknv8znhxzMcetL6WcTSBYKVMgg
