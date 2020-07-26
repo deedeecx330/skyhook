@@ -42,6 +42,7 @@ usage = """
     
     skyhook search [file name] - Search history for entries matching [file name]
     skyhook delete [hash] - Delete entries specified by [hash] from history
+    skyhook save [hash] - Save a single history entry specified by [hash] to the local directory
     
     skyhook import [path] - Import history from a location specified by [path]
     skyhook export [path] - Export history to a location specified by [path]
@@ -123,6 +124,20 @@ def exportDb(newPath):
     except:
         return(1)
 
+def saveOne(fileHash):
+    item = cursor.execute("SELECT name, hash, key, date FROM history WHERE hash = ?", (fileHash,)).fetchone()
+    if item == None:
+        return(1)
+    try:
+        auxcon = sqlite3.connect("{}.save".format(fileHash))
+        auxcur = auxcon.cursor()
+        auxcur.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
+        auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
+        auxcon.commit()
+    except:
+        return(2)
+    return(0)
+
 def importDb(dbPath):
     try:
         with open(dbPath, "rb") as db:
@@ -133,7 +148,7 @@ def importDb(dbPath):
         try:
             auxcon = sqlite3.connect(dbPath)
             auxcur = auxcon.cursor()
-            auxfetch = auxcur.execute("SELECT name, hash, key, date FROM history").fetchall()
+            auxfetch = auxcur.execute("SELECT DISTINCT name, hash, key, date FROM history").fetchall()
             if len(auxfetch) == 0:
                 return(3)
             else:
@@ -286,6 +301,18 @@ def main(command, target):
             return(1)
         else:
             print("[+] Successfully exported history to {}".format(target))
+            return(0)
+
+    elif command == "save":
+        res = saveOne(target)
+        if res == 1:
+            print("[!] Could not find {} in local history".format(target))
+            return(1)
+        if res == 2:
+            print("[!] Error saving {} to local directory".format(target))
+            return(1)
+        else:
+            print("[+] Successfully saved {} to local directory".format(target))
             return(0)
 
     elif command == "import":
