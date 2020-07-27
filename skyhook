@@ -182,23 +182,6 @@ separator = b" :><:><:><: "
 def pad(content):
     return(content + b"\x00" * (AES.block_size - len(content) % AES.block_size))
 
-def extractData(filename):
-
-    inFile = open(filename, "rb")
-    iv, content = inFile.read().split(separator)
-    inFile.close()
-
-    inFile = open(filename, "wb")
-    inFile.seek(0)
-    inFile.truncate()
-    inFile.write(content)
-    inFile.close()
-
-    inFile = open(filename, "rb")
-    length = int(len(content) / AES.block_size)
-
-    return(iv, length, inFile)
-
 def encryptFile(originalName, newName, key):
 
     iv = os.urandom(16)
@@ -228,7 +211,10 @@ def encryptFile(originalName, newName, key):
 
 def decryptFile(oldName, newName, key):
 
-    iv, length, inFile = extractData(oldName)
+    inFile = open(oldName, "rb")
+    iv, content = inFile.read().split(separator)
+    length = int(len(content) / AES.block_size)
+    skip = len(iv + separator)
     
     outFile = open(newName, "wb")
 
@@ -236,7 +222,7 @@ def decryptFile(oldName, newName, key):
 
     for i in range(0, length):
 
-        inFile.seek(i * AES.block_size)
+        inFile.seek(i * AES.block_size + skip)
         content = inFile.read(AES.block_size)
 
         if i == length - 1:
