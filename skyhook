@@ -173,35 +173,46 @@ def deleteItem(fileHash):
         except:
             return(2)
 
+def cleanUp(filePath):
+    os.remove(filePath)
 
 # Custom file encryption/decryption functions
 separator = b" :><:><:><: "
 
-def pad(message):
-    return(message + b"\0" * (AES.block_size - len(message) % AES.block_size))
+def encryptFile(originalName, newName, key):
 
-def cleanUp(filePath):
-    os.remove(filePath)
+    bytesKey = bytes(str(key), 'utf8')
 
-def encryptFile(originalName, aesName, key):
+    if len(bytesKey) < 32:
+        bytesKey = bytesKey + b"\0" * (32 - len(bytesKey))
+    elif len(bytesKey) > 32:
+        bytesKey = bytesKey[:-(len(bytesKey) - 32)]
 
     with open(originalName, "rb") as infile:
-        contents = pad(infile.read())
         iv = os.urandom(16)
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        encryptedContents = cipher.encrypt(contents)
+        cipher = AES.new(bytesKey, AES.MODE_CBC, iv)
+        content = infile.read()
+        encryptedContents = cipher.encrypt(content + b"\0" * (AES.block_size - len(content) % AES.block_size))
 
-    with open(aesName, "wb") as outfile:
+    with open(newName, "wb") as outfile:
         outfile.write(iv + separator + encryptedContents)
 
-def decryptFile(aesName, originalName, key):
 
-    with open(aesName, "rb") as infile:
+def decryptFile(oldName, newName, key):
+
+    bytesKey = bytes(str(key), 'utf8')
+
+    if len(bytesKey) < 32:
+        bytesKey = bytesKey + b"\0" * (32 - len(bytesKey))
+    elif len(bytesKey) > 32:
+        bytesKey = bytesKey[:-(len(bytesKey) - 32)]
+
+    with open(oldName, "rb") as infile:
         iv, contents = infile.read().split(separator)
-        cipher = AES.new(key, AES.MODE_CBC, iv)
+        cipher = AES.new(bytesKey, AES.MODE_CBC, iv)
         decryptedContents = cipher.decrypt(contents).rstrip(b"\0")
 
-    with open(originalName, "wb") as outfile:
+    with open(newName, "wb") as outfile:
         outfile.write(decryptedContents)
 
 # File upload/download functions featuring automatic encryption of files before they are
@@ -379,7 +390,6 @@ def main(command, target):
         return(1)
 
 if __name__ == "__main__":
-
     if len(sys.argv) != 3:
         print(usage)
         exit()
