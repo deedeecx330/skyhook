@@ -213,6 +213,7 @@ def decryptFile(oldName, newName, key):
 
     inFile = open(oldName, "rb")
     iv, content = inFile.read().split(separator)
+    
     length = int(len(content) / AES.block_size)
     skip = len(iv + separator)
     
@@ -264,6 +265,7 @@ def uploadFile(fileName):
 
         now = datetime.now()
         currentDate = now.strftime("%d/%m/%Y %H:%M:%S")
+        
         print("[+] Adding entry to history")
         try:
             cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", (fileName, result["Hash"], password, currentDate,))
@@ -298,6 +300,8 @@ def downloadFile(fileHash):
     except:
         cleanUp(fileHash)
         return(3)
+
+    cleanUp(fileHash)
 
     return(fileName)
 
