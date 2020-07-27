@@ -254,13 +254,13 @@ def getRandomString():
     return("".join(random.choice(string.ascii_letters + string.digits) for i in range(32)))
 
 def uploadFile(fileName):
-    
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
 
-    if not fileName in files:
+    if not fileName in [f for f in os.listdir('.') if os.path.isfile(f)]:
         return(1)
     else:
+        
         password = getRandomString()
+        
         aesName = "{}.sky".format(fileName)
         tmpPath = "{}/{}".format(tmpDir, aesName)
 
