@@ -183,16 +183,20 @@ def pad(content):
     return(content + b"\0" * (AES.block_size - len(content) % AES.block_size))
 
 def extractData(filename):
+    
     inFile = open(filename, "rb")
     iv, content = inFile.read().split(separator)
     inFile.close()
+    
     inFile = open(filename, "wb")
     inFile.seek(0)
     inFile.truncate()
     inFile.write(content)
     inFile.close()
+    
     inFile = open(filename, "rb")
     length = int(len(content) / AES.block_size)
+    
     return(iv, length, inFile)
 
 def encryptFile(originalName, newName, key):
@@ -208,11 +212,14 @@ def encryptFile(originalName, newName, key):
     length = int(len(pad(inFile.read())) / AES.block_size)
 
     for i in range(0, length):
+        
         inFile.seek(i * AES.block_size)
+        
         if i == length - 1:
             toCrypt = pad(inFile.read(AES.block_size))
         else:
             toCrypt = inFile.read(AES.block_size)
+            
         encContent = cipher.encrypt(toCrypt)
         outFile.write(encContent)
     
@@ -227,11 +234,14 @@ def decryptFile(oldName, newName, key):
     cipher = AES.new(key, AES.MODE_CBC, iv)
 
     for i in range(0, length):
+        
         inFile.seek(i * AES.block_size)
+        
         if i == (length - 1):
             content = inFile.read(AES.block_size).rstrip(b"\0")
         else:
             content = inFile.read(AES.block_size)
+            
         decContent = cipher.decrypt(content)
         outFile.write(decContent)
 
