@@ -8,14 +8,11 @@ except:
 
 import sqlite3
 import os
-import stat
 import sys
 import getpass
 import string
 import random
-import re
 import shutil
-from Crypto import Random
 from Crypto.Cipher import AES
 from datetime import datetime
 
@@ -86,6 +83,7 @@ def listDb():
     items = cursor.execute("SELECT DISTINCT name, hash, date FROM history").fetchall()
     if len(items) == 0:
         print("[!] History is empty")
+        exit()
     else:
         print("\n[+] History (Name (Date) [Hash])")
         for name, hash, date in items:
@@ -96,6 +94,7 @@ def listKeys():
     items = cursor.execute("SELECT DISTINCT name, key FROM history").fetchall()
     if len(items) == 0:
         print("[!] History is empty")
+        exit()
     else:
         print("\n[+] Keys (Name [Key])")
         for name, key in items:
@@ -111,6 +110,7 @@ def searchDb(fileName):
     items = cursor.execute("SELECT DISTINCT name, hash, date FROM history WHERE name = ?", (fileName,)).fetchall()
     if len(items) == 0:
         print("[!] Could not find any entries for {}".format(fileName))
+        exit()
     else:
         print("\n[+] Files (Name (Date) [Hash])")
         for name, hash, date in items:
@@ -125,7 +125,7 @@ def exportDb(newPath):
         return(1)
 
 def saveOne(fileHash):
-    item = cursor.execute("SELECT name, hash, key, date FROM history WHERE hash = ?", (fileHash,)).fetchone()
+    item = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", (fileHash,)).fetchone()
     if item == None:
         return(1)
     try:
@@ -152,8 +152,8 @@ def importDb(dbPath):
             if len(auxfetch) == 0:
                 return(3)
             else:
-                for name, hash, key, date in auxfetch:
-                    cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", (name, hash, key, date,))
+                for item in auxfetch:
+                    cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
                 connection.commit()
                 return(0)
         except:
@@ -162,7 +162,7 @@ def importDb(dbPath):
         return(2) 
 
 def deleteItem(fileHash):
-    item = cursor.execute("SELECT hash FROM history WHERE hash = ?", (fileHash,)).fetchone()
+    item = cursor.execute("SELECT DISTINCT hash FROM history WHERE hash = ?", (fileHash,)).fetchone()
     if item == None:
         return(1)
     else:
@@ -252,7 +252,7 @@ def uploadFile(fileName):
 def downloadFile(fileHash):
 
     try:
-        fileName, password = cursor.execute("SELECT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
+        fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
     except:
         return(1)
 
