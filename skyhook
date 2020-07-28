@@ -252,7 +252,7 @@ def deCrypt(aesCipher, outHandle, content, tthread, padded):
 
     with lock:
         if padded == True:
-            decContent.rstrip(b"\x00")
+            decContent = decContent.rstrip(b"\x00")
         outHandle.write(decContent)
         return(0)
 
