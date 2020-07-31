@@ -120,6 +120,3 @@ def deleteItem(fileHash):
             return(0)
         except:
             return(2)
-
-def cleanUp(filePath):
-    os.remove(filePath)

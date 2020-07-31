@@ -1,16 +1,24 @@
 try:
     import ipfsApi
 except:
-    print("Module ipfs-api not installed")
+    print("[!] Module ipfs-api not installed")
     exit()
 
-import random, string
+try:
+    from skyhookfilecrypt import *
+except:
+    print("[!] Module skyhookfilecrypt not installed")
+    exit()
+
+import random, string, os
 from datetime import datetime
-from crypto import *
-from db import *
 from config import *
+from db import *
 
 peer = ipfsApi.Client(host, port)
+
+def cleanUp(filePath):
+    os.remove(filePath)
 
 def getRandomString():
     return("".join(random.choice(string.ascii_letters + string.digits) for i in range(32)))
