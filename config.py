@@ -1,4 +1,4 @@
-import getpass
+import os
 
 # Using infura as to not require the user to run an IPFS node
 host = "https://ipfs.infura.io"
@@ -8,7 +8,7 @@ port = 5001
 tmpDir = "/tmp"
 
 # History location
-dbLocation = "/home/{}/.local/skyhook.db".format(getpass.getuser())
+dbLocation = "{}/.local/skyhook.db".format(os.environ["HOME"])
 
 usage = """
     skyhook clear history   -   Delete everything from history
