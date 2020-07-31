@@ -39,14 +39,14 @@ def listDb():
     print()
 
 def listKeys():
-    items = cursor.execute("SELECT DISTINCT name, key FROM history").fetchall()
+    items = cursor.execute("SELECT DISTINCT name, date, key FROM history").fetchall()
     if len(items) == 0:
         print("[!] History is empty")
         exit()
     else:
-        print("\n[+] Keys (Name [Key])")
-        for name, key in items:
-            print("\n{} [{}]".format(name, key))
+        print("\n[+] Keys (Name (date) [Key])")
+        for name, date, key in items:
+            print("\n{} ({}) [{}]".format(name, date, key))
     print()
 
 def clearDb():
