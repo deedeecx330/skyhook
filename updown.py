@@ -5,17 +5,15 @@ except:
     exit()
 
 try:
-    from skyhookfilecrypt import *
+    import skyhookfilecrypt
 except:
     print("[!] Module skyhookfilecrypt not installed")
     exit()
 
 from datetime import datetime
-from config import *
-from db import *
-from aux import *
+import os, db, aux, config
 
-peer = ipfsApi.Client(host, port)
+peer = ipfsApi.Client(config.host, config.port)
 
 def uploadFile(fileName):
 
@@ -23,47 +21,47 @@ def uploadFile(fileName):
         return(1)
     else:
         
-        password = getRandomString(32)
+        password = aux.getRandomString(32)
         
         aesName = "{}.sky".format(fileName)
-        tmpPath = "{}/{}".format(tmpDir, aesName)
+        tmpPath = "{}/{}".format(config.tmpDir, aesName)
 
         print("[+] Encrypting {}".format(fileName))
 
-        encryptFile(fileName, tmpPath, password)
+        skyhookfilecrypt.encryptFile(fileName, tmpPath, password)
 
-        os.chdir(tmpDir)
+        os.chdir(config.tmpDir)
         print("[+] Uploading {}".format(fileName))
         try:
             result = peer.add(aesName)
         except:
-            cleanUp(tmpPath)
+            aux.cleanUp(tmpPath)
             return(3)
 
         now = datetime.now()
         currentDate = now.strftime("%d/%m/%Y %H:%M:%S")
         print("[+] Adding entry to history")
 
-        res = addToHistory(fileName, result["Hash"], password, currentDate)
+        res = db.addToHistory(fileName, result["Hash"], password, currentDate)
         if res == 0:
             pass
         else:
-            cleanUp(tmpPath)
+            aux.cleanUp(tmpPath)
             return(4)
 
-        cleanUp(tmpPath)
+        aux.cleanUp(tmpPath)
 
         return(0)
 
 def downloadFile(fileHash):
 
-    fileName, password = getEntry(fileHash)
+    fileName, password = db.getEntry(fileHash)
 
     if fileName == 1 and password == 1:
         return(1)
 
     saveFile = "{}/{}".format(os.getcwd(), fileName)
-    os.chdir(tmpDir)
+    os.chdir(config.tmpDir)
     print("[+] Downloading {}".format(fileName))
 
     try:
@@ -73,11 +71,11 @@ def downloadFile(fileHash):
 
     print("[+] Decrypting {}".format(fileName))
     try:
-        decryptFile(fileHash, saveFile, password)
+        skyhookfilecrypt.decryptFile(fileHash, saveFile, password)
     except:
-        cleanUp(fileHash)
+        aux.cleanUp(fileHash)
         return(3)
 
-    cleanUp(fileHash)
+    aux.cleanUp(fileHash)
 
     return(fileName)

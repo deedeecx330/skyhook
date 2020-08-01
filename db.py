@@ -1,30 +1,29 @@
-import os, sqlite3, shutil
-from config import *
+import os, sqlite3, shutil, config
 
 try:
-    connection = sqlite3.connect(dbLocation)
+    connection = sqlite3.connect(config.dbLocation)
     cursor = connection.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
 except:
-    print("[!] Could not connect to {}".format(dbLocation))
+    print("[!] Could not connect to {}".format(config.dbLocation))
     exit()
 
-if os.path.isdir(tmpDir):
+if os.path.isdir(config.tmpDir):
     pass
 else:
-    print("[!] Temporary path {} is not a valid directory".format(tmpDir))
+    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
     exit()
 
-if os.path.isabs(tmpDir):
+if os.path.isabs(config.tmpDir):
     pass
 else:
-    print("[!] Temporary path {} is not absolute".format(tmpDir))
+    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
     exit()
 
-if os.access(tmpDir, os.W_OK) and os.access(tmpDir, os.R_OK):
+if os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK):
     pass
 else:
-    print("[!] Cannot read or write to and from {}".format(tmpDir))
+    print("[!] Cannot read or write to and from {}".format(config.tmpDir))
     exit()
 
 def listDb():
@@ -67,7 +66,7 @@ def searchDb(fileName):
 
 def exportDb(newPath):
     try:
-        shutil.copyfile(dbLocation, newPath)
+        shutil.copyfile(config.dbLocation, newPath)
         return(0)
     except:
         return(1)

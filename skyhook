@@ -1,30 +1,27 @@
 #!/bin/python3
 
-import sys
-from db import *
-from config import *
-from updown import *
+import sys, db, updown, config
 
 def main(command, target):
 
     if command == "list" and target == "history":
-        listDb()
+        db.listDb()
         return(0)
 
     if command == "list" and target == "keys":
-        listKeys()
+        db.listKeys()
         return(0)
 
     elif command == "clear" and target == "history":
-        clearDb()
+        db.clearDb()
         return(0)
 
     elif command == "search":
-        searchDb(target)
+        db.searchDb(target)
         return(0)
 
     elif command == "export":
-        res = exportDb(target)
+        res = db.exportDb(target)
         if res == 1:
             print("[!] Error exporting history to {}".format(target))
             return(1)
@@ -33,7 +30,7 @@ def main(command, target):
             return(0)
 
     elif command == "save":
-        res = saveOne(target)
+        res = db.saveOne(target)
         if res == 1:
             print("[!] Could not find {} in local history".format(target))
             return(1)
@@ -45,7 +42,7 @@ def main(command, target):
             return(0)
 
     elif command == "import":
-        res = importDb(target)
+        res = db.importDb(target)
         if res == 1:
             print("[!] Could not read {}".format(target))
             return(1)
@@ -60,7 +57,7 @@ def main(command, target):
             return(0)
 
     elif command == "delete":
-        res = deleteItem(target)
+        res = db.deleteItem(target)
         if res == 1:
             print("[!] Could not find {} in history".format(target))
             return(1)
@@ -72,7 +69,7 @@ def main(command, target):
             return(0)
 
     elif command == "upload":
-        res = uploadFile(target)
+        res = updown.uploadFile(target)
         if res == 1:
             print("[!] Could not find {}".format(target))
             return(1)
@@ -90,7 +87,7 @@ def main(command, target):
             return(0)
 
     elif command == "download":
-        res = downloadFile(target)
+        res = updown.downloadFile(target)
         if res == 1:
             print("[!] Could not retrieve {} from history".format(target))
             return(1)
@@ -104,17 +101,16 @@ def main(command, target):
             print("[+] Downloaded {} successfully".format(res))
             return(0)
     else:
-        print(usage)
+        print(config.usage)
         return(1)
 
 if __name__ == "__main__":
 
     if len(sys.argv) != 3:
-        print(usage)
+        print(config.usage)
         exit()
 
     command = str(sys.argv[1])
     target = str(sys.argv[2])
 
-    main(command, target)
-    
+    main(command, target) 
