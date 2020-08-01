@@ -10,18 +10,12 @@ except:
     print("[!] Module skyhookfilecrypt not installed")
     exit()
 
-import random, string, os
 from datetime import datetime
 from config import *
 from db import *
+from aux import *
 
 peer = ipfsApi.Client(host, port)
-
-def cleanUp(filePath):
-    os.remove(filePath)
-
-def getRandomString():
-    return("".join(random.choice(string.ascii_letters + string.digits) for i in range(32)))
 
 def uploadFile(fileName):
 
@@ -29,7 +23,7 @@ def uploadFile(fileName):
         return(1)
     else:
         
-        password = getRandomString()
+        password = getRandomString(32)
         
         aesName = "{}.sky".format(fileName)
         tmpPath = "{}/{}".format(tmpDir, aesName)
@@ -49,10 +43,11 @@ def uploadFile(fileName):
         now = datetime.now()
         currentDate = now.strftime("%d/%m/%Y %H:%M:%S")
         print("[+] Adding entry to history")
-        try:
-            cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", (fileName, result["Hash"], password, currentDate,))
-            connection.commit()
-        except:
+
+        res = addToHistory(fileName, result["Hash"], password, currentDate)
+        if res == 0:
+            pass
+        else:
             cleanUp(tmpPath)
             return(4)
 
@@ -62,9 +57,9 @@ def uploadFile(fileName):
 
 def downloadFile(fileHash):
 
-    try:
-        fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
-    except:
+    fileName, password = getEntry(fileHash)
+
+    if fileName == 1 and password == 1:
         return(1)
 
     saveFile = "{}/{}".format(os.getcwd(), fileName)

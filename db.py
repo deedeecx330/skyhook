@@ -72,15 +72,16 @@ def exportDb(newPath):
     except:
         return(1)
 
-def saveOne(fileHash):
-    item = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", (fileHash,)).fetchone()
-    if item == None:
+def saveOne(fileName):
+    items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", (fileName,)).fetchall()
+    if len(items) == 0:
         return(1)
     try:
-        auxcon = sqlite3.connect("{}.save".format(fileHash))
+        auxcon = sqlite3.connect("{}.save".format(fileName))
         auxcur = auxcon.cursor()
         auxcur.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
-        auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
+        for item in items:
+            auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
         auxcon.commit()
     except:
         return(2)
@@ -109,14 +110,29 @@ def importDb(dbPath):
     else:
         return(2) 
 
-def deleteItem(fileHash):
-    item = cursor.execute("SELECT DISTINCT hash FROM history WHERE hash = ?", (fileHash,)).fetchone()
+def deleteItem(fileName):
+    item = cursor.execute("SELECT DISTINCT name FROM history WHERE name = ?", (fileName,)).fetchone()
     if item == None:
         return(1)
     else:
         try:
-            cursor.execute("DELETE FROM history WHERE hash = ?", (fileHash,))
+            cursor.execute("DELETE FROM history WHERE name = ?", (fileName,))
             connection.commit()
             return(0)
         except:
             return(2)
+
+def getEntry(fileHash):
+    fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
+    if fileName == None or password == None:
+        return(1, 1)
+    else:
+        return(fileName, password)
+
+def addToHistory(name, hash, key, date):
+    try:
+        cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", (name, hash, key, date,))
+        connection.commit()
+        return(0)
+    except:
+        return(1)

@@ -16,8 +16,8 @@ usage = """
     skyhook list keys       -   List all files and their corresponding encryption keys
     
     skyhook search [file name]  -   Search history for entries matching [file name]
-    skyhook delete [hash]       -   Delete an entry specified by [hash] from history
-    skyhook save [hash]         -   Save a single history entry specified by [hash] to the current directory (Importable)
+    skyhook delete [file name]  -   Delete all entries specified by [file name] from history
+    skyhook save [file name]    -   Save all history entries specified by [file name] to the current directory (Importable)
     
     skyhook import [path]   -   Import history from a location specified by [path]
     skyhook export [path]   -   Export history to a location specified by [path]
