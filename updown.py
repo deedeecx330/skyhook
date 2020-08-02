@@ -28,7 +28,7 @@ def uploadFile(fileName):
 
         print("[+] Encrypting {}".format(fileName))
 
-        skyhookfilecrypt.encryptFile(fileName, tmpPath, password)
+        skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
 
         os.chdir(config.tmpDir)
         print("[+] Uploading {}".format(fileName))
@@ -71,7 +71,7 @@ def downloadFile(fileHash):
 
     print("[+] Decrypting {}".format(fileName))
     try:
-        skyhookfilecrypt.decryptFile(fileHash, saveFile, password)
+        skyhookfilecrypt.decryptFile(fileHash, saveFile, bytes(password, "ascii"))
     except:
         aux.cleanUp(fileHash)
         return(3)
