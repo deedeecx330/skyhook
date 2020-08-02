@@ -40,3 +40,5 @@ or
 ```
 pip3 install --user ipfs-api skyhookfilecrypt
 ```
+# Other versions
+Skyhook for Windows can be found here: https://github.com/deedeecx330/skyhook-windows
