@@ -27,8 +27,11 @@ def uploadFile(fileName):
         tmpPath = "{}/{}".format(config.tmpDir, aesName)
 
         print("[+] Encrypting {}".format(fileName))
-
-        skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
+        try:
+            skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
+        except:
+            aux.cleanUp(tmpPath)
+            return(2)
 
         os.chdir(config.tmpDir)
         print("[+] Uploading {}".format(fileName))
