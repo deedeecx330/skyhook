@@ -32,9 +32,9 @@ def listDb():
         print("[!] History is empty")
         exit()
     else:
-        print("\n[+] History (Name (Date) [Hash])")
+        print("\nName Date Hash")
         for name, hash, date in items:
-            print("\n{} ({}) [{}]".format(name, date, hash))
+            print("\n{} {} {}".format(name, date, hash))
     print()
 
 def listKeys():
@@ -43,9 +43,9 @@ def listKeys():
         print("[!] History is empty")
         exit()
     else:
-        print("\n[+] Keys (Name (date) [Key])")
+        print("\nName Date Key")
         for name, date, key in items:
-            print("\n{} ({}) [{}]".format(name, date, key))
+            print("\n{} {} {}".format(name, date, key))
     print()
 
 def clearDb():
@@ -59,9 +59,9 @@ def searchDb(fileName):
         print("[!] Could not find any entries for {}".format(fileName))
         exit()
     else:
-        print("\n[+] Files (Name (Date) [Hash])")
+        print("\nName Date Hash")
         for name, hash, date in items:
-            print("\n{} ({}) [{}]".format(name, date, hash))
+            print("\n{} {} {}".format(name, date, hash))
     print()
 
 def exportDb(newPath):

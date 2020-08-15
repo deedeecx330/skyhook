@@ -42,7 +42,7 @@ def uploadFile(fileName):
             return(3)
 
         now = datetime.now()
-        currentDate = now.strftime("%d/%m/%Y %H:%M:%S")
+        currentDate = now.strftime("%d/%m/%Y-%H:%M:%S")
         print("[+] Adding entry to history")
 
         res = db.addToHistory(fileName, result["Hash"], password, currentDate)
