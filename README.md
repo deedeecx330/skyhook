@@ -16,9 +16,9 @@ Simply running Skyhook with no arguments gives the user a list of available comm
     skyhook list history    -   List all entries in history
     skyhook list keys       -   List all files and their corresponding encryption keys
     
-    skyhook search [file name]  -   Search history for entries matching [file name]
-    skyhook delete [file name]  -   Delete all entries specified by [file name] from history
-    skyhook save [file name]    -   Save all history entries specified by [file name] to the current directory (Importable)
+    skyhook search [file name or hash]  -   Search history for entries matching [file name or hash]
+    skyhook delete [file name or hash]  -   Delete entries specified by [file name or hash] from history
+    skyhook save [file name or hash]    -   Save history entries specified by [file name or hash] to the current directory (Importable)
     
     skyhook import [path]   -   Import history from a location specified by [path]
     skyhook export [path]   -   Export history to a location specified by [path]

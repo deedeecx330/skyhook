@@ -30,7 +30,7 @@ def listDb():
     items = cursor.execute("SELECT DISTINCT name, hash, date FROM history").fetchall()
     if len(items) == 0:
         print("[!] History is empty")
-        exit()
+        return()
     else:
         print("\nName Date Hash")
         for name, hash, date in items:
@@ -41,7 +41,7 @@ def listKeys():
     items = cursor.execute("SELECT DISTINCT name, date, key FROM history").fetchall()
     if len(items) == 0:
         print("[!] History is empty")
-        exit()
+        return()
     else:
         print("\nName Date Key")
         for name, date, key in items:
@@ -53,11 +53,13 @@ def clearDb():
     connection.commit()
     print("[+] History cleared")
 
-def searchDb(fileName):
-    items = cursor.execute("SELECT DISTINCT name, hash, date FROM history WHERE name = ?", (fileName,)).fetchall()
+def searchDb(identifier):
+    items = cursor.execute("SELECT DISTINCT name, hash, date FROM history WHERE hash = ?", (identifier,)).fetchall()
     if len(items) == 0:
-        print("[!] Could not find any entries for {}".format(fileName))
-        exit()
+        items = cursor.execute("SELECT DISTINCT name, hash, date FROM history WHERE name = ?", (identifier,)).fetchall()
+    if len(items) == 0:
+        print("[!] Could not find any entries for {}".format(identifier))
+        return()
     else:
         print("\nName Date Hash")
         for name, hash, date in items:
@@ -71,12 +73,14 @@ def exportDb(newPath):
     except:
         return(1)
 
-def saveOne(fileName):
-    items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", (fileName,)).fetchall()
+def saveOne(identifier):
+    items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", (identifier,)).fetchall()
+    if len(items) == 0:
+        items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", (identifier,)).fetchall()
     if len(items) == 0:
         return(1)
     try:
-        auxcon = sqlite3.connect("{}.save".format(fileName))
+        auxcon = sqlite3.connect("{}.save".format(identifier))
         auxcur = auxcon.cursor()
         auxcur.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
         for item in items:
@@ -109,13 +113,17 @@ def importDb(dbPath):
     else:
         return(2) 
 
-def deleteItem(fileName):
-    item = cursor.execute("SELECT DISTINCT name FROM history WHERE name = ?", (fileName,)).fetchone()
+def deleteItem(identifier):
+    ident = "hash"
+    item = cursor.execute("SELECT DISTINCT hash FROM history WHERE hash = ?", (identifier,)).fetchone()
+    if item == None:
+        item = cursor.execute("SELECT DISTINCT name FROM history WHERE name = ?", (identifier,)).fetchone()
+        ident = "name"
     if item == None:
         return(1)
     else:
         try:
-            cursor.execute("DELETE FROM history WHERE name = ?", (fileName,))
+            cursor.execute("DELETE FROM history WHERE {} = ?".format(ident), (identifier,))
             connection.commit()
             return(0)
         except:
