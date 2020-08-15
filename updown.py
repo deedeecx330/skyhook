@@ -17,7 +17,7 @@ peer = ipfsApi.Client(config.host, config.port)
 
 def uploadFile(fileName):
 
-    if not fileName in [f for f in os.listdir('.') if os.path.isfile(f)]:
+    if not fileName in [f for f in os.listdir(".") if os.path.isfile(f)]:
         return(1)
     else:
         
