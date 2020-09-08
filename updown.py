@@ -2,13 +2,11 @@ try:
     import ipfsApi
 except:
     print("[!] Module ipfs-api not installed")
-    exit()
 
 try:
     import skyhookfilecrypt
 except:
     print("[!] Module skyhookfilecrypt not installed")
-    exit()
 
 from datetime import datetime
 import os, db, aux, config
