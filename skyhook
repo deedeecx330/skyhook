@@ -2,14 +2,7 @@
 
 import sys, db, updown, config
 
-def main():
-
-    if len(sys.argv) != 3:
-        print(config.usage)
-        return(1)
-
-    command = str(sys.argv[1])
-    target = str(sys.argv[2])
+def main(command, target):
 
     if command == "list" and target == "history":
         db.listDb()
@@ -112,4 +105,12 @@ def main():
         return(1)
 
 if __name__ == "__main__":
-    main()
+
+    if len(sys.argv) != 3:
+        print(config.usage)
+        exit()
+
+    command = str(sys.argv[1])
+    target = str(sys.argv[2])
+
+    main(command, target) 

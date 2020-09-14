@@ -1,42 +1,30 @@
 import os, sqlite3, shutil, config
 
-connection = None
-cursor = None
+try:
+    connection = sqlite3.connect(config.dbLocation)
+    cursor = connection.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
+except:
+    print("[!] Could not connect to {}".format(config.dbLocation))
+    exit()
 
-def preCheck():
+if os.path.isdir(config.tmpDir):
+    pass
+else:
+    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
+    exit()
 
-    global connection
-    global cursor
+if os.path.isabs(config.tmpDir):
+    pass
+else:
+    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
+    exit()
 
-    try:
-        connection = sqlite3.connect(config.dbLocation)
-        cursor = connection.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
-    except:
-        print("[!] Could not connect to {}".format(config.dbLocation))
-        return(1)
-
-    if os.path.isdir(config.tmpDir):
-        pass
-    else:
-        print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
-        return(1)
-
-    if os.path.isabs(config.tmpDir):
-        pass
-    else:
-        print("[!] Temporary path {} is not absolute".format(config.tmpDir))
-        return(1)
-
-    if os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK):
-        pass
-    else:
-        print("[!] Cannot read or write to and from {}".format(config.tmpDir))
-        return(1)
-
-    return(0)
-
-preCheck()
+if os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK):
+    pass
+else:
+    print("[!] Cannot read or write to and from {}".format(config.tmpDir))
+    exit()
 
 def listDb():
     items = cursor.execute("SELECT DISTINCT name, hash, date FROM history").fetchall()
