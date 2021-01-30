@@ -15,13 +15,13 @@ usage = """
     skyhook list history    -   List all entries in history
     skyhook list keys       -   List all files and their corresponding encryption keys
     
-    skyhook search [file name or hash]  -   Search history for entries matching [file name or hash]
-    skyhook delete [file name or hash]  -   Delete entries specified by [file name or hash] from history
-    skyhook save [file name or hash]    -   Save history entries specified by [file name or hash] to the current directory (Importable)
+    skyhook search [comma-separated list of file names and/or hashes]  -   Search history for entries matching [file names and/or hashes]
+    skyhook delete [comma-separated list of file names and/or hashes]  -   Delete entries specified by [file names and/or hashes] from history
+    skyhook save [comma-separated list of file names and/or hashes]    -   Save history entries specified by [file names and/or hashes] to the current directory
     
-    skyhook import [path]   -   Import history from a location specified by [path]
-    skyhook export [path]   -   Export history to a location specified by [path]
+    skyhook import [comma-separated list of paths]   -   Import history from a location specified by [paths]
+    skyhook export [path]   -   Export entire history to a location specified by [path]
     
-    skyhook upload [file name]  -   Upload a file specified by [file name] from the current directory to the IPFS network
-    skyhook download [hash]     -   Download a file specified by [hash] from the IPFS network to the current directory
+    skyhook upload [comma-separated list of file names]  -   Upload a file specified by [file names] from the current directory to the IPFS network
+    skyhook download [comma-separated list of hashes]    -   Download a file specified by [hashes] from the IPFS network to the current directory
 """
