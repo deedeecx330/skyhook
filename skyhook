@@ -6,106 +6,82 @@ def main(command, target):
 
     if command == "list" and target == "history":
         db.listDb()
-        return(0)
 
     if command == "list" and target == "keys":
         db.listKeys()
-        return(0)
 
     elif command == "clear" and target == "history":
         db.clearDb()
-        return(0)
 
     elif command == "search":
         for tar in target.split(','):
             db.searchDb(tar)
-            return(0)
 
     elif command == "export":
         res = db.exportDb(target)
         if res == 1:
             print("[!] Error exporting history to {}".format(target))
-            return(1)
         else:
             print("[+] Successfully exported history to {}".format(target))
-            return(0)
 
     elif command == "save":
         for tar in target.split(','):
             res = db.saveOne(tar)
             if res == 1:
                 print("[!] Could not find {} in local history".format(tar))
-                return(1)
-            if res == 2:
+            elif res == 2:
                 print("[!] Error saving {} to local directory".format(tar))
-                return(1)
             else:
                 print("[+] Successfully saved {} to local directory".format(tar))
-                return(0)
 
     elif command == "import":
         for tar in target.split(','):
             res = db.importDb(tar)
             if res == 1:
                 print("[!] Could not read {}".format(tar))
-                return(1)
             elif res == 2:
                 print("[!] Could not import {}".format(tar))
-                return(1)
             elif res == 3:
                 print("[!] No entries in {}".format(tar))
-                return(1)
             else:
                 print("[+] Successfully imported {}".format(tar))
-                return(0)
 
     elif command == "delete":
         for tar in target.split(','):
             res = db.deleteItem(tar)
             if res == 1:
                 print("[!] Could not find {} in history".format(tar))
-                return(1)
             elif res == 2:
                 print("[!] Could not delete {} from history".format(tar))
-                return(1)
             else:
                 print("[+] Successfully deleted {} from history".format(tar))
-                return(0)
 
     elif command == "upload":
         for tar in target.split(','):
             res = updown.uploadFile(tar)
             if res == 1:
                 print("[!] Could not find {}".format(tar))
-                return(1)
             elif res == 2:
                 print("[!] Could not encrypt {}".format(tar))
-                return(1)
             elif res == 3:
                 print("[!] Could not upload {}".format(tar))
-                return(1)
             elif res == 4:
                 print("[!] Could not add an entry for {}".format(tar))
-                return(1)
             else:
                 print("[+] Successfully uploaded {}".format(tar))
-                return(0)
 
     elif command == "download":
         for tar in target.split(','):
             res = updown.downloadFile(tar)
             if res == 1:
                 print("[!] Could not retrieve {} from history".format(tar))
-                return(1)
             elif res == 2:
                 print("[!] Could not download {}".format(tar))
-                return(1)
             elif res == 3:
                 print("[!] Could not decrypt {}".format(tar))
-                return(1)
             else:
                 print("[+] Downloaded {} successfully".format(res))
-                return(0)
+                
     else:
         print(config.usage)
         return(1)
