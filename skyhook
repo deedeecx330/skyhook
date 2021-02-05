@@ -7,7 +7,7 @@ def main(command, target):
     if command == "list" and target == "history":
         db.listDb()
 
-    if command == "list" and target == "keys":
+    elif command == "list" and target == "keys":
         db.listKeys()
 
     elif command == "clear" and target == "history":
@@ -78,7 +78,6 @@ def main(command, target):
                 
     else:
         print(config.usage)
-        return(1)
 
 if __name__ == "__main__":
 
