@@ -16,16 +16,18 @@ Simply running Skyhook with no arguments gives the user a list of available comm
     skyhook list history    -   List all entries in history
     skyhook list keys       -   List all files and their corresponding encryption keys
     
-    skyhook search [comma-separated list of file names and/or hashes]  -   Search history for entries matching [file names and/or hashes]
-    skyhook delete [comma-separated list of file names and/or hashes]  -   Delete entries specified by [file names and/or hashes] from history
-    skyhook save [comma-separated list of file names and/or hashes]    -   Save history entries specified by [file names and/or hashes] to the current directory
+    skyhook search [file name/hash]  -   Search history for entries matching [file name/hash]
+    skyhook delete [file name/hash]  -   Delete entries specified by [file name/hash] from history
+    skyhook save [file name/hash]    -   Save history entries specified by [file name/hash] to the current directory
     
-    skyhook import [comma-separated list of paths]   -   Import history from a location specified by [paths]
+    skyhook import [path]   -   Import history from a location specified by [path]
     skyhook export [path]   -   Export entire history to a location specified by [path]
     
-    skyhook upload [comma-separated list of file names]  -   Upload a file specified by [file names] from the current directory to the IPFS network
-    skyhook download [comma-separated list of hashes]    -   Download a file specified by [hashes] from the IPFS network to the current directory
+    skyhook upload [file name]	-	Upload a file specified by [file name] from the current directory to the IPFS network
+    skyhook download [hash]	-	Download a file specified by [hash] from the IPFS network to the current directory
+    skyhook add [name:hash:key]	-	Manually add an entry to history specified by colon-separated values of [name:hash:key]	
 
+    It is possible to specify multiple values in a form of a comma-separated list for search,delete,save,import,upload,download and add functions.
 ```
 
 # Requirements
