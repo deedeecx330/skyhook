@@ -16,6 +16,18 @@ def main(command, target):
     elif command == "search":
         db.searchDb(target)
 
+    elif command == "add":
+        name, hash, key = target.split(':')
+        res = db.addEntry(name, hash, key)
+        if res == 1:
+            print("[!] Error adding entry to history")
+        elif res == 2:
+            print("[!] Invalid hash")
+        elif res == 3:
+            print("[!] Unacceptable key length")
+        else:
+            print("[+] Successfully added {}".format(name))
+
     elif command == "export":
         res = db.exportDb(target)
         if res == 1:
