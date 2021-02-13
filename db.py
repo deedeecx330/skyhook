@@ -1,4 +1,5 @@
 import os, sqlite3, shutil, config
+from datetime import datetime
 
 try:
     connection = sqlite3.connect(config.dbLocation)
@@ -143,3 +144,13 @@ def addToHistory(name, hash, key, date):
         return(0)
     except:
         return(1)
+
+def addEntry(name, hash, key):
+    if len(hash) != 46:
+        return(2)
+    if len(key) != 32:
+        return(3)
+    now = datetime.now()
+    currentDate = now.strftime("%d/%m/%Y-%H:%M:%S")
+    res = addToHistory(name, hash, key, currentDate)
+    return(res)
