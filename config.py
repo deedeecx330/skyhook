@@ -13,7 +13,6 @@ dbLocation = "{}/.local/skyhook.db".format(os.environ["HOME"])
 usage = """
     skyhook clear history   -   Delete everything from history
     skyhook list history    -   List all entries in history
-    skyhook list keys       -   List all files and their corresponding encryption keys
 
     skyhook search [file name/hash]  -   Search history for entries matching [file name/hash]
     skyhook delete [file name/hash]  -   Delete entries specified by [file name/hash] from history
