@@ -28,25 +28,13 @@ else:
     exit()
 
 def listDb():
-    items = cursor.execute("SELECT DISTINCT name, hash, date FROM history").fetchall()
+    items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history").fetchall()
     if len(items) == 0:
-        print("[!] History is empty")
-        return()
+        return(1)
     else:
-        print("\nName Date Hash")
-        for name, hash, date in items:
-            print("\n{} {} {}".format(name, date, hash))
-    print()
-
-def listKeys():
-    items = cursor.execute("SELECT DISTINCT name, date, key FROM history").fetchall()
-    if len(items) == 0:
-        print("[!] History is empty")
-        return()
-    else:
-        print("\nName Date Key")
-        for name, date, key in items:
-            print("\n{} {} {}".format(name, date, key))
+        print("Name Date Hash Key")
+        for name, date, hash, key in items:
+            print("{} {} {} {}".format(name, date, hash, key))
     print()
 
 def clearDb():
@@ -55,16 +43,15 @@ def clearDb():
     print("[+] History cleared")
 
 def searchDb(identifier):
-    items = cursor.execute("SELECT DISTINCT name, hash, date FROM history WHERE hash = ?", (identifier,)).fetchall()
+    items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history WHERE hash = ?", (identifier,)).fetchall()
     if len(items) == 0:
-        items = cursor.execute("SELECT DISTINCT name, hash, date FROM history WHERE name = ?", (identifier,)).fetchall()
+        items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history WHERE name = ?", (identifier,)).fetchall()
     if len(items) == 0:
-        print("[!] Could not find any entries for {}".format(identifier))
-        return()
+        return(1)
     else:
-        print("\nName Date Hash")
-        for name, hash, date in items:
-            print("\n{} {} {}".format(name, date, hash))
+        print("Name Date Hash Key")
+        for name, date, hash, key in items:
+            print("{} {} {} {}".format(name, date, hash, key))
     print()
 
 def exportDb(newPath):
