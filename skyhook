@@ -7,9 +7,6 @@ def main(command, target):
     if command == "list" and target == "history":
         db.listDb()
 
-    elif command == "list" and target == "keys":
-        db.listKeys()
-
     elif command == "clear" and target == "history":
         db.clearDb()
 
