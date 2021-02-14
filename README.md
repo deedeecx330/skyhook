@@ -19,7 +19,7 @@ Simply running Skyhook with no arguments gives the user a list of available comm
     skyhook search [file name/hash]  -   Search history for entries matching [file name/hash]
     skyhook delete [file name/hash]  -   Delete entries specified by [file name/hash] from history
     skyhook save [file name/hash]    -   Save history entries specified by [file name/hash] to the current directory
-    skyhook add [name:hash:key]      -	Manually add an entry to history specified by colon-separated values of [name:hash:key]
+    skyhook add [name:hash:key]      -   Manually add an entry to history specified by colon-separated values of [name:hash:key]
     
     skyhook import [path]   -   Import history from a location specified by [path]
     skyhook export [path]   -   Export entire history to a location specified by [path]
