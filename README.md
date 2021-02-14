@@ -24,8 +24,8 @@ Simply running Skyhook with no arguments gives the user a list of available comm
     skyhook import [path]   -   Import history from a location specified by [path]
     skyhook export [path]   -   Export entire history to a location specified by [path]
     
-    skyhook upload [file name]	-	Upload a file specified by [file name] from the current directory to the IPFS network
-    skyhook download [hash]     -	Download a file specified by [hash] from the IPFS network to the current directory	
+    skyhook upload [file name]  -   Upload a file specified by [file name] from the current directory to the IPFS network
+    skyhook download [hash]     -   Download a file specified by [hash] from the IPFS network to the current directory	
 
     It is possible to specify multiple values in a form of a comma-separated list for search,delete,save,import,upload,download and add functions.
 ```
