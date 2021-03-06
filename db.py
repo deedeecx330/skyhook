@@ -33,7 +33,7 @@ def listDb():
         return(1)
     else:
         for name, date, hash, key in items:
-            print("{} {} {} {}".format(name, date, hash, key))
+            print("Name: {} Date: {} Hash: {} Key: {}".format(name, date, hash, key))
 
 def clearDb():
     cursor.execute("DROP TABLE IF EXISTS history")
@@ -48,7 +48,7 @@ def searchDb(identifier):
         return(1)
     else:
         for name, date, hash, key in items:
-            print("{} {} {} {}".format(name, date, hash, key))
+            print("Name: {} Date: {} Hash: {} Key: {}".format(name, date, hash, key))
 
 def exportDb(newPath):
     try:
