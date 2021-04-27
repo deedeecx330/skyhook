@@ -35,7 +35,7 @@ def main(command, target):
         if res == 1:
             print("[!] Error exporting history to {}".format(target))
         else:
-            print("[+] Successfully exported history to {}".format(target))
+            print("[+] Successfully exported history to {}.pod".format(target))
 
     elif command == "save":
         for tar in target.split(','):
@@ -107,4 +107,4 @@ if __name__ == "__main__":
     command = str(sys.argv[1])
     target = str(sys.argv[2])
     
-    main(command, target) 
+    main(command, target)
