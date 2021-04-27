@@ -58,23 +58,18 @@ def exportDb(newPath):
         return(1)
 
 def saveOne(identifier):
-    completeItems = list()
-    for item in identifier.split(','):
-        items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", tuple(item)).fetchall()
-        if len(items) != 0:
-            completeItems.append(items)
-        else:
-            items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", tuple(item)).fetchall()
-        if len(items) == 0:
-            return(1)
+    items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", tuple(identifier)).fetchall()
+    if len(items) == 0:
+        items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", tuple(identifier)).fetchall()
+    if len(items) == 0:
+        return(1)
     try:
         auxcon = sqlite3.connect("export.pod")
         auxcur = auxcon.cursor()
         auxcur.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
-        for item in completeItems:
-            for item in items:
-                auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
-            auxcon.commit()
+        for item in items:
+            auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
+        auxcon.commit()
     except:
         return(2)
     return(0)
