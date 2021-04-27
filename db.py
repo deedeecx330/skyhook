@@ -52,7 +52,7 @@ def searchDb(identifier):
 
 def exportDb(newPath):
     try:
-        shutil.copyfile(config.dbLocation, "{}.pod".format(newPath))
+        shutil.copyfile(config.dbLocation, "export.pod")
         return(0)
     except:
         return(1)
