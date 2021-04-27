@@ -41,9 +41,9 @@ def clearDb():
     print("[+] History cleared")
 
 def searchDb(identifier):
-    items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history WHERE hash = ?", (identifier,)).fetchall()
+    items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history WHERE hash = ?", tuple(identifier)).fetchall()
     if len(items) == 0:
-        items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history WHERE name = ?", (identifier,)).fetchall()
+        items = cursor.execute("SELECT DISTINCT name, date, hash, key FROM history WHERE name = ?", tuple(identifier)).fetchall()
     if len(items) == 0:
         return(1)
     else:
@@ -52,24 +52,29 @@ def searchDb(identifier):
 
 def exportDb(newPath):
     try:
-        shutil.copyfile(config.dbLocation, newPath)
+        shutil.copyfile(config.dbLocation, "{}.pod".format(newPath))
         return(0)
     except:
         return(1)
 
 def saveOne(identifier):
-    items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", (identifier,)).fetchall()
-    if len(items) == 0:
-        items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", (identifier,)).fetchall()
-    if len(items) == 0:
-        return(1)
+    completeItems = list()
+    for item in identifier.split(','):
+        items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE hash = ?", tuple(item)).fetchall()
+        if len(items) != 0:
+            completeItems.append(items)
+        else:
+            items = cursor.execute("SELECT DISTINCT name, hash, key, date FROM history WHERE name = ?", tuple(item)).fetchall()
+        if len(items) == 0:
+            return(1)
     try:
-        auxcon = sqlite3.connect("{}.save".format(identifier))
+        auxcon = sqlite3.connect("export.pod")
         auxcur = auxcon.cursor()
         auxcur.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
-        for item in items:
-            auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
-        auxcon.commit()
+        for item in completeItems:
+            for item in items:
+                auxcur.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(item))
+            auxcon.commit()
     except:
         return(2)
     return(0)
@@ -99,22 +104,22 @@ def importDb(dbPath):
 
 def deleteItem(identifier):
     ident = "hash"
-    item = cursor.execute("SELECT DISTINCT hash FROM history WHERE hash = ?", (identifier,)).fetchone()
+    item = cursor.execute("SELECT DISTINCT hash FROM history WHERE hash = ?", tuple(identifier)).fetchone()
     if item == None:
-        item = cursor.execute("SELECT DISTINCT name FROM history WHERE name = ?", (identifier,)).fetchone()
+        item = cursor.execute("SELECT DISTINCT name FROM history WHERE name = ?", tuple(identifier)).fetchone()
         ident = "name"
     if item == None:
         return(1)
     else:
         try:
-            cursor.execute("DELETE FROM history WHERE {} = ?".format(ident), (identifier,))
+            cursor.execute("DELETE FROM history WHERE {} = ?".format(ident), tuple(identifier))
             connection.commit()
             return(0)
         except:
             return(2)
 
 def getEntry(fileHash):
-    fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
+    fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", tuple(fileHash)).fetchone()
     if fileName == None or password == None:
         return(1, 1)
     else:
@@ -122,7 +127,7 @@ def getEntry(fileHash):
 
 def addToHistory(name, hash, key, date):
     try:
-        cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", (name, hash, key, date,))
+        cursor.execute("INSERT INTO history VALUES (?, ?, ?, ?)", tuple(name, hash, key, date))
         connection.commit()
         return(0)
     except:
