@@ -16,6 +16,8 @@ import os, db, aux, config
 peer = ipfsApi.Client(config.host, config.port)
 
 def uploadFile(fileName):
+    
+    currentDir = os.getcwd()
 
     if not fileName in [f for f in os.listdir(".") if os.path.isfile(f)]:
         return(1)
@@ -37,7 +39,9 @@ def uploadFile(fileName):
         print("[+] Uploading {}".format(fileName))
         try:
             result = peer.add(aesName)
+            os.chdir(currentDir)
         except:
+            os.chdir(currentDir)
             aux.cleanUp(tmpPath)
             return(3)
 
@@ -57,6 +61,8 @@ def uploadFile(fileName):
         return(0)
 
 def downloadFile(fileHash):
+    
+    currentDir = os.getcwd()
 
     fileName, password = db.getEntry(fileHash)
 
@@ -69,7 +75,9 @@ def downloadFile(fileHash):
 
     try:
         peer.get(fileHash)
+        os.chdir(currentDir)
     except:
+        os.chdir(currentDir)
         return(2)
 
     print("[+] Decrypting {}".format(fileName))
