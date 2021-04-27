@@ -69,13 +69,12 @@ def downloadFile(fileHash):
     if fileName == 1 and password == 1:
         return(1)
 
-    saveFile = "{}/{}".format(os.getcwd(), fileName)
+    saveFile = "{}/{}".format(currentDir, fileName)
     os.chdir(config.tmpDir)
     print("[+] Downloading {}".format(fileName))
 
     try:
         peer.get(fileHash)
-        os.chdir(currentDir)
     except:
         os.chdir(currentDir)
         return(2)
@@ -85,8 +84,10 @@ def downloadFile(fileHash):
         skyhookfilecrypt.decryptFile(fileHash, saveFile, bytes(password, "ascii"))
     except:
         aux.cleanUp(fileHash)
+        os.chdir(currentDir)
         return(3)
 
     aux.cleanUp(fileHash)
+    os.chdir(currentDir)
 
     return(fileName)
