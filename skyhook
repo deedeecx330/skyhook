@@ -30,12 +30,12 @@ def main(command, target):
             else:
                 print("[+] Successfully added {}".format(name))
 
-    elif command == "export":
+    elif command == "export" and target == "history":
         res = db.exportDb(target)
         if res == 1:
-            print("[!] Error exporting history to {}".format(target))
+            print("[!] Error exporting history")
         else:
-            print("[+] Successfully exported history to {}.pod".format(target))
+            print("[+] Successfully exported history")
 
     elif command == "save":
         for tar in target.split(','):
