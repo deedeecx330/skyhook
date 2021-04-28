@@ -22,7 +22,7 @@ def uploadFile(fileName):
     else:
         password = aux.getRandomString(32)
         aesName = "{}.sky".format(fileName)
-        tmpPath = "{}/{}".format(config.tmpDir, aesName)
+        tmpPath = "{}/{}".format(config.tmpDir.rstrip('/'), aesName)
         print("[+] Encrypting {}".format(fileName))
         try:
             skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
