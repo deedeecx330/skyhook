@@ -5,7 +5,7 @@ if not os.path.isdir(os.path.dirname(config.dbLocation)):
     try:
         os.makedirs(config.dbLocation, exist_ok=True)
     except:
-        print("[!] Could not create database directory".format(os.path.dirname(config.dbLocation)))
+        print("[!] Could not create database directory {}".format(os.path.dirname(config.dbLocation)))
         exit()
         
 try:
