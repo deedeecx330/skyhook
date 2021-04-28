@@ -1,6 +1,13 @@
 import os, sqlite3, shutil, config
 from datetime import datetime
 
+if not os.path.isdir(os.path.dirname(config.dbLocation)):
+    try:
+        os.makedirs(config.dbLocation, exist_ok=True)
+    except:
+        print("[!] Could not create database directory".format(os.path.dirname(config.dbLocation)))
+        exit()
+        
 try:
     connection = sqlite3.connect(config.dbLocation)
     cursor = connection.cursor()
@@ -73,7 +80,6 @@ def saveOne(identifier):
     except:
         return(2)
     return(0)
-
 
 def importDb(dbPath):
     try:
