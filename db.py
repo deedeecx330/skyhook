@@ -1,12 +1,12 @@
-import sqlite3, shutil, config
+import sqlite3, shutil, skyhookConfig
 from datetime import datetime
     
 try:
-    connection = sqlite3.connect(config.dbLocation)
+    connection = sqlite3.connect(skyhookConfig.dbLocation)
     cursor = connection.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
 except:
-    print("[!] Cannot connect to {}".format(config.dbLocation))
+    print("[!] Cannot connect to {}".format(skyhookConfig.dbLocation))
     exit()
 
 def listDb():
@@ -34,7 +34,7 @@ def searchDb(identifier):
 
 def exportDb(newPath):
     try:
-        shutil.copyfile(config.dbLocation, "export.pod")
+        shutil.copyfile(skyhookConfig.dbLocation, "export.pod")
         return(0)
     except:
         return(1)
