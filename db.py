@@ -1,6 +1,36 @@
 import os, sqlite3, shutil, config
 from datetime import datetime
 
+if not os.path.isdir(config.skyhookDir):
+    try:
+        os.makedirs(config.skyhookDir, exist_ok=True)
+    except:
+        print("[!] Could not create Skyhook directory {}".format(config.skyhookDir))
+        exit()
+        
+if not (os.access(config.skyhookDir, os.W_OK) and os.access(config.skyhookDir, os.R_OK)):
+    print("[!] Cannot read or write to and from {}".format(config.skyhookDir))
+    exit()
+        
+if not os.path.isfile(config.configFile):
+    try:
+        os.link(config.__file__, config.configFile)
+    except:
+        print("[!] Could not create configuration file {}".format(config.configFile))
+        exit()
+
+if not os.path.isdir(config.tmpDir):
+    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
+    exit()
+
+if not os.path.isabs(config.tmpDir):
+    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
+    exit()
+
+if not (os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK)):
+    print("[!] Cannot read or write to and from {}".format(config.tmpDir))
+    exit()
+    
 if not hasattr(config, 'configFile'):
     print("[!] Configuration file location is not defined")
     exit()
@@ -51,36 +81,6 @@ if not hasattr(config, 'skyhookDb'):
     
 if not isinstance(config.skyhookDb, str):
     print("[!] Skyhook database file location variable is not a string\nPlease modify {}".format(config.configFile))
-    exit()
-
-if not os.path.isdir(config.skyhookDir):
-    try:
-        os.makedirs(config.skyhookDir, exist_ok=True)
-    except:
-        print("[!] Could not create Skyhook directory {}".format(config.skyhookDir))
-        exit()
-        
-if not (os.access(config.skyhookDir, os.W_OK) and os.access(config.skyhookDir, os.R_OK)):
-    print("[!] Cannot read or write to and from {}".format(config.skyhookDir))
-    exit()
-        
-if not os.path.isfile(config.configFile):
-    try:
-        os.link(config.__file__, config.configFile)
-    except:
-        print("[!] Could not create configuration file {}".format(config.configFile))
-        exit()
-
-if not os.path.isdir(config.tmpDir):
-    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
-    exit()
-
-if not os.path.isabs(config.tmpDir):
-    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
-    exit()
-
-if not (os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK)):
-    print("[!] Cannot read or write to and from {}".format(config.tmpDir))
     exit()
     
 try:
