@@ -11,12 +11,12 @@ except:
     exit()
 
 from datetime import datetime
-import os, db, random, string, config
+import os, skyhookDb, random, string, skyhookConfig
 
 def getRandomString(length):
     return("".join(random.choice(string.ascii_letters + string.digits) for i in range(length)))
 
-peer = ipfsApi.Client(config.host, config.port)
+peer = ipfsApi.Client(skyhookConfig.host, skyhookConfig.port)
 
 def uploadFile(fileName):
     currentDir = os.getcwd()
@@ -25,14 +25,14 @@ def uploadFile(fileName):
     else:
         password = getRandomString(32)
         aesName = "{}.sky".format(fileName)
-        tmpPath = "{}/{}".format(config.tmpDir.rstrip('/'), aesName)
+        tmpPath = "{}/{}".format(skyhookConfig.tmpDir.rstrip('/'), aesName)
         print("[+] Encrypting {}".format(fileName))
         try:
             skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
         except:
             os.remove(tmpPath)
             return(2)
-        os.chdir(config.tmpDir)
+        os.chdir(skyhookConfig.tmpDir)
         print("[+] Uploading {}".format(fileName))
         try:
             result = peer.add(aesName)
@@ -44,7 +44,7 @@ def uploadFile(fileName):
         now = datetime.now()
         currentDate = now.strftime("%d/%m/%Y-%H:%M:%S")
         print("[+] Adding entry to history")
-        res = db.addToHistory(fileName, result["Hash"], password, currentDate)
+        res = skyhookDb.addToHistory(fileName, result["Hash"], password, currentDate)
         if res == 0:
             pass
         else:
@@ -55,11 +55,11 @@ def uploadFile(fileName):
 
 def downloadFile(fileHash):
     currentDir = os.getcwd()
-    fileName, password = db.getEntry(fileHash)
+    fileName, password = skyhookDb.getEntry(fileHash)
     if fileName == 1 and password == 1:
         return(1)
     saveFile = "{}/{}".format(currentDir, fileName)
-    os.chdir(config.tmpDir)
+    os.chdir(skyhookConfig.tmpDir)
     print("[+] Downloading {}".format(fileName))
     try:
         peer.get(fileHash)
