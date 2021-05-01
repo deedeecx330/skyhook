@@ -25,12 +25,15 @@ def main(command, target):
         res = skyhookDb.listDb()
         if res == 1:
             print("[!] History is empty")
+            
     elif command == "clear" and target == "history":
         skyhookDb.clearDb()
+        
     elif command == "search":
         res = skyhookDb.searchDb(target)
         if res == 1:
             print("[!] Could not find {} in history".format(target))
+            
     elif command == "add":
         for tar in target.split(','):
             name, hash, key = tar.split(':')
@@ -43,12 +46,14 @@ def main(command, target):
                 print("[!] Unacceptable key length")
             else:
                 print("[+] Successfully added {} to export.pod".format(name))
+                
     elif command == "export" and target == "history":
         res = skyhookDb.exportDb(target)
         if res == 1:
             print("[!] Error exporting history")
         else:
             print("[+] Successfully exported history to export.pod")
+            
     elif command == "save":
         for tar in target.split(','):
             res = skyhookDb.saveOne(tar)
@@ -58,6 +63,7 @@ def main(command, target):
                 print("[!] Error saving {} to export.pod".format(tar))
             else:
                 print("[+] Successfully saved {} to export.pod".format(tar))
+                
     elif command == "import":
         for tar in target.split(','):
             res = skyhookDb.importDb(tar)
@@ -69,6 +75,7 @@ def main(command, target):
                 print("[!] No entries in {}".format(tar))
             else:
                 print("[+] Successfully imported {}".format(tar))
+                
     elif command == "delete":
         for tar in target.split(','):
             res = skyhookDb.deleteItem(tar)
@@ -78,6 +85,7 @@ def main(command, target):
                 print("[!] Could not delete {} from history".format(tar))
             else:
                 print("[+] Successfully deleted {} from history".format(tar))
+                
     elif command == "upload":
         for tar in target.split(','):
             res = skyhookUpDown.uploadFile(tar)
@@ -91,6 +99,7 @@ def main(command, target):
                 print("[!] Could not add an entry for {}".format(tar))
             else:
                 print("[+] Successfully uploaded {}".format(tar))
+                
     elif command == "download":
         for tar in target.split(','):
             res = skyhookUpDown.downloadFile(tar)
@@ -102,13 +111,17 @@ def main(command, target):
                 print("[!] Could not decrypt {}".format(tar))
             else:
                 print("[+] Successfully downloaded {}".format(res))
+                
     else:
         print(usage)
 
 if __name__ == "__main__":
+    
     if len(sys.argv) != 3:
         print(usage)
         exit()
+        
     command = str(sys.argv[1])
     target = str(sys.argv[2])
+    
     main(command, target)
