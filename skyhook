@@ -101,7 +101,7 @@ def main(command, target):
             elif res == 3:
                 print("[!] Could not decrypt {}".format(tar))
             else:
-                print("[+] Downloaded {} successfully".format(res))
+                print("[+] Successfully downloaded {}".format(res))
     else:
         print(usage)
 
