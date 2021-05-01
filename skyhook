@@ -42,22 +42,22 @@ def main(command, target):
             elif res == 3:
                 print("[!] Unacceptable key length")
             else:
-                print("[+] Successfully added {}".format(name))
+                print("[+] Successfully added {} to export.pod".format(name))
     elif command == "export" and target == "history":
         res = db.exportDb(target)
         if res == 1:
             print("[!] Error exporting history")
         else:
-            print("[+] Successfully exported history")
+            print("[+] Successfully exported history to export.pod")
     elif command == "save":
         for tar in target.split(','):
             res = db.saveOne(tar)
             if res == 1:
-                print("[!] Could not find {} in local history".format(tar))
+                print("[!] Could not find {} in history".format(tar))
             elif res == 2:
-                print("[!] Error saving {} to local directory".format(tar))
+                print("[!] Error saving {} to export.pod".format(tar))
             else:
-                print("[+] Successfully saved {} to local directory".format(tar))
+                print("[+] Successfully saved {} to export.pod".format(tar))
     elif command == "import":
         for tar in target.split(','):
             res = db.importDb(tar)
