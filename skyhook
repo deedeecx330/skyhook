@@ -30,7 +30,7 @@ def main(command, target):
     elif command == "search":
         res = db.searchDb(target)
         if res == 1:
-            print("[!] Could not find any entries for {}".format(target))
+            print("[!] Could not find {} in history".format(target))
     elif command == "add":
         for tar in target.split(','):
             name, hash, key = tar.split(':')
