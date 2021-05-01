@@ -1,37 +1,45 @@
 import os, sqlite3, shutil, config
 from datetime import datetime
 
-if not os.path.isdir(os.path.dirname(config.dbLocation)):
+skyhookDir = os.path.dirname(config.dbLocation)
+configFile = "{}/skyhook.config".format(skyhookDir)
+
+if not os.path.isdir(skyhookDir):
     try:
-        os.makedirs(config.dbLocation, exist_ok=True)
+        os.makedirs(skyhookDir, exist_ok=True)
     except:
-        print("[!] Could not create database directory {}".format(os.path.dirname(config.dbLocation)))
+        print("[!] Could not create Skyhook directory {}".format(skyhookDir))
         exit()
         
+if not (os.access(skyhookDir, os.W_OK) and os.access(skyhookDir, os.R_OK)):
+    print("[!] Cannot read or write to and from {}".format(skyhookDir)
+    exit()
+        
+if not os.path.isfile(configFile):
+    try:
+        os.link(config.__file__, configFile)
+    except:
+        print("[!] Could not create configuration file {}".format(configFile))
+        exit()
+
+if not os.path.isdir(config.tmpDir):
+    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
+    exit()
+
+if not os.path.isabs(config.tmpDir):
+    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
+    exit()
+
+if not (os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK)):
+    print("[!] Cannot read or write to and from {}".format(config.tmpDir))
+    exit()
+    
 try:
     connection = sqlite3.connect(config.dbLocation)
     cursor = connection.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
 except:
     print("[!] Could not connect to {}".format(config.dbLocation))
-    exit()
-
-if os.path.isdir(config.tmpDir):
-    pass
-else:
-    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
-    exit()
-
-if os.path.isabs(config.tmpDir):
-    pass
-else:
-    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
-    exit()
-
-if os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK):
-    pass
-else:
-    print("[!] Cannot read or write to and from {}".format(config.tmpDir))
     exit()
 
 def listDb():
