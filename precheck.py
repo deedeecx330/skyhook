@@ -1,15 +1,15 @@
 import config, os
 
 if not os.path.isabs(config.skyhookDir):
-    print("[!] Skyhook directory {} is not on an absolute path".format(config.tmpDir))
+    print("[!] Skyhook directory {} is not on an absolute path".format(config.skyhookDir))
     exit()
     
 if not os.path.isabs(config.configFile):
-    print("[!] Configuration file location {} is not on an absolute path".format(config.tmpDir))
+    print("[!] Configuration file location {} is not on an absolute path".format(config.configFile))
     exit()
     
 if not os.path.isabs(config.dbLocation):
-    print("[!] History file location {} is not on an absolute path".format(config.tmpDir))
+    print("[!] History file location {} is not on an absolute path".format(config.dbLocation))
     exit()
 
 if not os.path.isdir(config.skyhookDir):
