@@ -12,7 +12,7 @@ import os
 tmpDir = "/tmp"
 
 # Skyhook directory
-skyhookDir = "{}/.local".format(os.environ["HOME"])
+skyhookDir = "{}/.local/skyhook".format(os.environ["HOME"])
 
 # History location
 dbLocation = "{}/skyhook.db".format(skyhookDir)
