@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import precheck, os, sys, db, updown, config
+import skyhookPreCheck, os, sys, skyhookDb, skyhookUpDown
 
 usage = """
     skyhook clear history   -   Delete everything from history
@@ -22,19 +22,19 @@ usage = """
 
 def main(command, target):
     if command == "list" and target == "history":
-        res = db.listDb()
+        res = skyhookDb.listDb()
         if res == 1:
             print("[!] History is empty")
     elif command == "clear" and target == "history":
-        db.clearDb()
+        skyhookDb.clearDb()
     elif command == "search":
-        res = db.searchDb(target)
+        res = skyhookDb.searchDb(target)
         if res == 1:
             print("[!] Could not find {} in history".format(target))
     elif command == "add":
         for tar in target.split(','):
             name, hash, key = tar.split(':')
-            res = db.addEntry(name, hash, key)
+            res = skyhookDb.addEntry(name, hash, key)
             if res == 1:
                 print("[!] Error adding entry to history")
             elif res == 2:
@@ -44,14 +44,14 @@ def main(command, target):
             else:
                 print("[+] Successfully added {} to export.pod".format(name))
     elif command == "export" and target == "history":
-        res = db.exportDb(target)
+        res = skyhookDb.exportDb(target)
         if res == 1:
             print("[!] Error exporting history")
         else:
             print("[+] Successfully exported history to export.pod")
     elif command == "save":
         for tar in target.split(','):
-            res = db.saveOne(tar)
+            res = skyhookDb.saveOne(tar)
             if res == 1:
                 print("[!] Could not find {} in history".format(tar))
             elif res == 2:
@@ -60,7 +60,7 @@ def main(command, target):
                 print("[+] Successfully saved {} to export.pod".format(tar))
     elif command == "import":
         for tar in target.split(','):
-            res = db.importDb(tar)
+            res = skyhookDb.importDb(tar)
             if res == 1:
                 print("[!] Could not read {}".format(tar))
             elif res == 2:
@@ -71,7 +71,7 @@ def main(command, target):
                 print("[+] Successfully imported {}".format(tar))
     elif command == "delete":
         for tar in target.split(','):
-            res = db.deleteItem(tar)
+            res = skyhookDb.deleteItem(tar)
             if res == 1:
                 print("[!] Could not find {} in history".format(tar))
             elif res == 2:
@@ -80,7 +80,7 @@ def main(command, target):
                 print("[+] Successfully deleted {} from history".format(tar))
     elif command == "upload":
         for tar in target.split(','):
-            res = updown.uploadFile(tar)
+            res = skyhookUpDown.uploadFile(tar)
             if res == 1:
                 print("[!] Could not find {}".format(tar))
             elif res == 2:
@@ -93,7 +93,7 @@ def main(command, target):
                 print("[+] Successfully uploaded {}".format(tar))
     elif command == "download":
         for tar in target.split(','):
-            res = updown.downloadFile(tar)
+            res = skyhookUpDown.downloadFile(tar)
             if res == 1:
                 print("[!] Could not retrieve {} from history".format(tar))
             elif res == 2:
