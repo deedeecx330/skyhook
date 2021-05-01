@@ -14,4 +14,4 @@ skyhookDir = "{}/.local".format(os.environ["HOME"])
 dbLocation = "{}/skyhook.db".format(skyhookDir)
 
 # Configuration file location
-dbLocation = "{}/skyhook.config".format(skyhookDir)
+configFile = "{}/skyhook.config".format(skyhookDir)
