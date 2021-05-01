@@ -8,7 +8,7 @@ import os
 # Example:
 # port = 5001
 
-# Temporary directory where all the processing happens
+# Temporary directory for file processing
 tmpDir = "/tmp"
 
 # Skyhook directory
