@@ -22,6 +22,14 @@ if not os.path.isdir(config.skyhookDir):
 if not (os.access(config.skyhookDir, os.W_OK) and os.access(config.skyhookDir, os.R_OK)):
     print("[!] Cannot read or write to and from {}".format(config.skyhookDir))
     exit()
+    
+if not (os.access(os.path.dirname(config.configFile), os.W_OK) and os.access(os.path.dirname(config.configFile), os.R_OK)):
+    print("[!] Cannot read or write to and from {}".format(os.path.dirname(config.configFile)))
+    exit()
+    
+if not (os.access(os.path.dirname(config.dbLocation), os.W_OK) and os.access(os.path.dirname(config.dbLocation), os.R_OK)):
+    print("[!] Cannot read or write to and from {}".format(os.path.dirname(config.dbLocation)))
+    exit()
         
 if not os.path.isfile(config.configFile):
     try:
