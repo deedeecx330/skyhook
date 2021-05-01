@@ -1,6 +1,58 @@
 import os, sqlite3, shutil, config
 from datetime import datetime
 
+if not hasattr(config, 'configFile'):
+    print("[!] Configuration file location is not defined")
+    exit()
+    
+if not isinstance(config.configFile, str):
+    print("[!] Configuration file location variable is not a string\nPlease modify {}".format(config.configFile))
+    exit()
+
+if not hasattr(config, 'host'):
+    print("[!] IPFS Host is not defined\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not isinstance(config.host, str):
+    print("[!] IPFS Host variable is not a string\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not hasattr(config, 'port'):
+    print("[!] IPFS Port is not defined\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not isinstance(config.port, int):
+    print("[!] IPFS Port variable is not an integer\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if config.port < 0 or config.port > 65353:
+    print("[!] IPFS Port out of range (0 - 65353)\nPlease modify {}".format(config.configFile))
+    exit()
+
+if not hasattr(config, 'tmpDir'):
+    print("[!] Temporary directory is not defined\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not isinstance(config.tmpDir, str):
+    print("[!] Temporary directory variable is not a string\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not hasattr(config, 'skyhookDir'):
+    print("[!] Skyhook directory is not defined\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not isinstance(config.skyhookDir, str):
+    print("[!] Skyhook directory variable is not a string\nPlease modify {}".format(config.configFile))
+    exit()
+    
+if not hasattr(config, 'skyhookDb'):
+    print("[!] Skyhook database file location is not defined")
+    exit()
+    
+if not isinstance(config.skyhookDb, str):
+    print("[!] Skyhook database file location variable is not a string\nPlease modify {}".format(config.configFile))
+    exit()
+
 if not os.path.isdir(config.skyhookDir):
     try:
         os.makedirs(config.skyhookDir, exist_ok=True)
