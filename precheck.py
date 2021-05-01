@@ -1,4 +1,4 @@
-import config, os
+import config, filecmp, os
 
 if not os.path.isabs(config.skyhookDir):
     print("[!] Skyhook directory {} is not on an absolute path".format(config.skyhookDir))
@@ -37,7 +37,15 @@ if not os.path.isfile(config.configFile):
     except:
         print("[!] Could not create configuration file {}".format(config.configFile))
         exit()
-
+        
+if not filecmp.cmp(config.__file__, config.configFile):
+    try:
+        os.remove(config.configFile)
+        os.link(config.__file__, config.configFile)
+    except:
+        print("[!] Could not create configuration file {}".format(config.configFile))
+        exit()
+        
 if not os.path.isdir(config.tmpDir):
     print("[!] Temporary directory {} is not a valid directory".format(config.tmpDir))
     exit()
