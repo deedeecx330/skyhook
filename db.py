@@ -12,7 +12,7 @@ if not os.path.isdir(skyhookDir):
         exit()
         
 if not (os.access(skyhookDir, os.W_OK) and os.access(skyhookDir, os.R_OK)):
-    print("[!] Cannot read or write to and from {}".format(skyhookDir)
+    print("[!] Cannot read or write to and from {}".format(skyhookDir))
     exit()
         
 if not os.path.isfile(configFile):
