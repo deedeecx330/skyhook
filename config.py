@@ -1,10 +1,10 @@
 import os
 
-# IPFS node host
+# IPFS Host
 # Example:
 # host = "https://ipfs.infura.io"
 
-# IPFS node port
+# IPFS Port
 # Example:
 # port = 5001
 
