@@ -3,6 +3,14 @@ import config, os
 if not os.path.isabs(config.skyhookDir):
     print("[!] Skyhook directory {} is not on an absolute path".format(config.tmpDir))
     exit()
+    
+if not os.path.isabs(config.configFile):
+    print("[!] Configuration file location {} is not on an absolute path".format(config.tmpDir))
+    exit()
+    
+if not os.path.isabs(config.dbLocation):
+    print("[!] History file location {} is not on an absolute path".format(config.tmpDir))
+    exit()
 
 if not os.path.isdir(config.skyhookDir):
     try:
@@ -79,9 +87,9 @@ if not isinstance(config.skyhookDir, str):
     exit()
     
 if not hasattr(config, 'dbLocation'):
-    print("[!] Skyhook database file location is not defined")
+    print("[!] Skyhook history file location is not defined")
     exit()
     
 if not isinstance(config.dbLocation, str):
-    print("[!] Skyhook database file location variable is not a string\nPlease modify {}".format(config.configFile))
+    print("[!] Skyhook history file location variable is not a string\nPlease modify {}".format(config.configFile))
     exit()
