@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, sys, db, updown, config
+import precheck, os, sys, db, updown, config
 
 usage = """
     skyhook clear history   -   Delete everything from history
