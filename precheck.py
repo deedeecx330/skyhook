@@ -1,5 +1,9 @@
 import config, os
 
+if not os.path.isabs(config.skyhookDir):
+    print("[!] Skyhook directory {} is not on an absolute path".format(config.tmpDir))
+    exit()
+
 if not os.path.isdir(config.skyhookDir):
     try:
         os.makedirs(config.skyhookDir, exist_ok=True)
@@ -19,11 +23,11 @@ if not os.path.isfile(config.configFile):
         exit()
 
 if not os.path.isdir(config.tmpDir):
-    print("[!] Temporary path {} is not a valid directory".format(config.tmpDir))
+    print("[!] Temporary directory {} is not a valid directory".format(config.tmpDir))
     exit()
 
 if not os.path.isabs(config.tmpDir):
-    print("[!] Temporary path {} is not absolute".format(config.tmpDir))
+    print("[!] Temporary directory {} is not on an absolute path".format(config.tmpDir))
     exit()
 
 if not (os.access(config.tmpDir, os.W_OK) and os.access(config.tmpDir, os.R_OK)):
