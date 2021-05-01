@@ -6,7 +6,7 @@ try:
     cursor = connection.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS history (name TEXT, hash TEXT, key TEXT, date TEXT)")
 except:
-    print("[!] Could not connect to {}".format(config.dbLocation))
+    print("[!] Cannot connect to {}".format(config.dbLocation))
     exit()
 
 def listDb():
