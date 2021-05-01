@@ -11,7 +11,10 @@ except:
     exit()
 
 from datetime import datetime
-import os, db, aux, config
+import os, db, random, string, config
+
+def getRandomString(length):
+    return("".join(random.choice(string.ascii_letters + string.digits) for i in range(length)))
 
 peer = ipfsApi.Client(config.host, config.port)
 
@@ -20,14 +23,14 @@ def uploadFile(fileName):
     if not fileName in [f for f in os.listdir(".") if os.path.isfile(f)]:
         return(1)
     else:
-        password = aux.getRandomString(32)
+        password = getRandomString(32)
         aesName = "{}.sky".format(fileName)
         tmpPath = "{}/{}".format(config.tmpDir.rstrip('/'), aesName)
         print("[+] Encrypting {}".format(fileName))
         try:
             skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
         except:
-            aux.cleanUp(tmpPath)
+            os.remove(tmpPath)
             return(2)
         os.chdir(config.tmpDir)
         print("[+] Uploading {}".format(fileName))
@@ -36,7 +39,7 @@ def uploadFile(fileName):
             os.chdir(currentDir)
         except:
             os.chdir(currentDir)
-            aux.cleanUp(tmpPath)
+            os.remove(tmpPath)
             return(3)
         now = datetime.now()
         currentDate = now.strftime("%d/%m/%Y-%H:%M:%S")
@@ -45,9 +48,9 @@ def uploadFile(fileName):
         if res == 0:
             pass
         else:
-            aux.cleanUp(tmpPath)
+            os.remove(tmpPath)
             return(4)
-        aux.cleanUp(tmpPath)
+        os.remove(tmpPath)
         return(0)
 
 def downloadFile(fileHash):
@@ -67,9 +70,9 @@ def downloadFile(fileHash):
     try:
         skyhookfilecrypt.decryptFile(fileHash, saveFile, bytes(password, "ascii"))
     except:
-        aux.cleanUp(fileHash)
+        os.remove(fileHash)
         os.chdir(currentDir)
         return(3)
-    aux.cleanUp(fileHash)
+    os.remove(fileHash)
     os.chdir(currentDir)
     return(fileName)
