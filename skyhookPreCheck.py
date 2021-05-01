@@ -58,7 +58,7 @@ if not (os.access(skyhookConfig.tmpDir, os.W_OK) and os.access(skyhookConfig.tmp
     print("[!] Cannot read or write to and from {}".format(skyhookConfig.tmpDir))
     exit()
     
-if not hasattr(config, 'configFile'):
+if not hasattr(skyhookConfig, 'configFile'):
     print("[!] Configuration file location is not defined")
     exit()
     
@@ -66,7 +66,7 @@ if not isinstance(skyhookConfig.configFile, str):
     print("[!] Configuration file location variable is not a string\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
 
-if not hasattr(config, 'host'):
+if not hasattr(skyhookConfig, 'host'):
     print("[!] IPFS Host is not defined\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
@@ -74,7 +74,7 @@ if not isinstance(skyhookConfig.host, str):
     print("[!] IPFS Host variable is not a string\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
-if not hasattr(config, 'port'):
+if not hasattr(skyhookConfig, 'port'):
     print("[!] IPFS Port is not defined\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
@@ -86,7 +86,7 @@ if skyhookConfig.port < 0 or skyhookConfig.port > 65353:
     print("[!] IPFS Port out of range (0 - 65353)\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
 
-if not hasattr(config, 'tmpDir'):
+if not hasattr(skyhookConfig, 'tmpDir'):
     print("[!] Temporary directory is not defined\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
@@ -94,7 +94,7 @@ if not isinstance(skyhookConfig.tmpDir, str):
     print("[!] Temporary directory variable is not a string\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
-if not hasattr(config, 'skyhookDir'):
+if not hasattr(skyhookConfig, 'skyhookDir'):
     print("[!] Skyhook directory is not defined\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
@@ -102,7 +102,7 @@ if not isinstance(skyhookConfig.skyhookDir, str):
     print("[!] Skyhook directory variable is not a string\nPlease modify {}".format(skyhookConfig.configFile))
     exit()
     
-if not hasattr(config, 'dbLocation'):
+if not hasattr(skyhookConfig, 'dbLocation'):
     print("[!] Skyhook history file location is not defined")
     exit()
     
