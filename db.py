@@ -75,11 +75,11 @@ if not isinstance(config.skyhookDir, str):
     print("[!] Skyhook directory variable is not a string\nPlease modify {}".format(config.configFile))
     exit()
     
-if not hasattr(config, 'skyhookDb'):
+if not hasattr(config, 'dbLocation'):
     print("[!] Skyhook database file location is not defined")
     exit()
     
-if not isinstance(config.skyhookDb, str):
+if not isinstance(config.dbLocation, str):
     print("[!] Skyhook database file location variable is not a string\nPlease modify {}".format(config.configFile))
     exit()
     
