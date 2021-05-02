@@ -13,6 +13,8 @@ except:
 from datetime import datetime
 import os, skyhookDb, random, string, skyhookConfig
 
+tmpDir = skyhookConfig.tmpDir.rstrip('/')
+
 def getRandomString(length):
     return("".join(random.choice(string.ascii_letters + string.digits) for i in range(length)))
 
@@ -25,14 +27,14 @@ def uploadFile(fileName):
     else:
         password = getRandomString(32)
         aesName = "{}.sky".format(fileName)
-        tmpPath = "{}/{}".format(skyhookConfig.tmpDir.rstrip('/'), aesName)
+        tmpPath = "{}/{}".format(tmpDir, aesName)
         print("[+] Encrypting {}".format(fileName))
         try:
             skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
         except:
             os.remove(tmpPath)
             return(2)
-        os.chdir(skyhookConfig.tmpDir)
+        os.chdir(tmpDir)
         print("[+] Uploading {}".format(fileName))
         try:
             result = peer.add(aesName)
@@ -59,7 +61,7 @@ def downloadFile(fileHash):
     if fileName == 1 and password == 1:
         return(1)
     saveFile = "{}/{}".format(currentDir, fileName)
-    os.chdir(skyhookConfig.tmpDir)
+    os.chdir(tmpDir)
     print("[+] Downloading {}".format(fileName))
     try:
         peer.get(fileHash)
