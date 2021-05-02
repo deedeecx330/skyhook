@@ -45,7 +45,7 @@ def main(command, target):
             elif res == 3:
                 print("[!] Unacceptable key length")
             else:
-                print("[+] Successfully added {} to export.pod".format(name))
+                print("[+] Successfully added {} to history".format(name))
                 
     elif command == "export" and target == "history":
         res = skyhookDb.exportDb(target)
