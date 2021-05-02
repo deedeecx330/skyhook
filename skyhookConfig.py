@@ -13,9 +13,3 @@ tmpDir = "/tmp"
 
 # Skyhook directory
 skyhookDir = "{}/.local/skyhook".format(os.environ["HOME"])
-
-# History location
-dbLocation = "{}/skyhook.db".format(skyhookDir)
-
-# Configuration file location
-configFile = "{}/skyhook.config".format(skyhookDir)
