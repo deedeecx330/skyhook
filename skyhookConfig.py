@@ -2,11 +2,7 @@ import os
 
 # IPFS Host
 # Example:
-# host = "https://ipfs.infura.io"
-
-# IPFS Port
-# Example:
-# port = 5001
+# host = "/dns/ipfs.infura.io/tcp/5001/https"
 
 # Temporary directory for file processing
 tmpDir = "/tmp"
