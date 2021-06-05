@@ -30,14 +30,14 @@ Simply running Skyhook with no arguments gives the user a list of available comm
 ```
 
 # Requirements
-The only requirements for running Skyhook are the ipfs-api and skyhookfilecrypt modules for Python 3, which can be installed by running:
+The only requirements for running Skyhook are the ipfshttpclient and skyhookfilecrypt modules for Python 3, which can be installed by running:
 
 ```
-pip3 install ipfs-api skyhookfilecrypt
+pip3 install ipfshttpclient skyhookfilecrypt
 ```
 
 or
 
 ```
-pip3 install --user ipfs-api skyhookfilecrypt
+pip3 install --user ipfshttpclient skyhookfilecrypt
 ```
