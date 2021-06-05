@@ -1,7 +1,7 @@
 try:
-    import ipfsApi
+    import ipfshttpclient
 except:
-    print("[!] Module ipfs-api not installed")
+    print("[!] Module ipfshttpclient not installed")
     exit()
 
 try:
@@ -18,7 +18,11 @@ tmpDir = skyhookConfig.tmpDir.rstrip('/')
 def getRandomString(length):
     return("".join(random.choice(string.ascii_letters + string.digits) for i in range(length)))
 
-peer = ipfsApi.Client(skyhookConfig.host, skyhookConfig.port)
+try:
+    peer = ipfshttpclient.connect(skyhookConfig.host)
+except:
+    print("[!] Cannot connect to {}".format(skyhookConfig.host))
+    exit()
 
 def uploadFile(fileName):
     currentDir = os.getcwd()
