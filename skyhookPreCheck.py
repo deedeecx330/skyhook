@@ -1,55 +1,84 @@
-import skyhookConfig, os
-
-if not hasattr(skyhookConfig, 'host'):
-    print("[!] IPFS Host is not defined\nPlease modify {}".format(skyhookConfig.__file__))
-    exit()
-    
-if not isinstance(skyhookConfig.host, str):
-    print("[!] IPFS Host variable is not a string\nPlease modify {}".format(skyhookConfig.__file__))
+try:
+    import ipfshttpclient
+except:
+    print("[!] Module ipfshttpclient not installed")
     exit()
 
-if not hasattr(skyhookConfig, 'tmpDir'):
-    print("[!] Temporary directory is not defined\nPlease modify {}".format(skyhookConfig.__file__))
-    exit()
-    
-if not isinstance(skyhookConfig.tmpDir, str):
-    print("[!] Temporary directory variable is not a string\nPlease modify {}".format(skyhookConfig.__file__))
+try:
+    import skyhookfilecrypt
+except:
+    print("[!] Module skyhookfilecrypt not installed")
     exit()
 
-if not os.path.isabs(skyhookConfig.tmpDir):
-    print("[!] Temporary directory {} is not on an absolute path".format(skyhookConfig.tmpDir))
+from datetime import datetime
+import os, skyhookDb, random, string, skyhookConfig
+
+tmpDir = skyhookConfig.tmpDir.rstrip('/')
+
+def getRandomString(length):
+    return("".join(random.choice(string.ascii_letters + string.digits) for i in range(length)))
+
+try:
+    peer = ipfshttpclient.connect(skyhookConfig.host)
+except:
+    print("[!] Cannot connect to {}".format(skyhookConfig.host))
     exit()
 
-if not (os.access(skyhookConfig.tmpDir, os.W_OK) and os.access(skyhookConfig.tmpDir, os.R_OK)):
-    print("[!] Cannot read or write to and from {}".format(skyhookConfig.tmpDir))
-    exit()
-    
-if not os.path.isdir(skyhookConfig.tmpDir):
+def uploadFile(fileName):
+    currentDir = os.getcwd()
+    if not fileName in [f for f in os.listdir(".") if os.path.isfile(f)]:
+        return(1)
+    else:
+        password = getRandomString(32)
+        aesName = "{}.sky".format(fileName)
+        tmpPath = "{}/{}".format(tmpDir, aesName)
+        print("[+] Encrypting {}".format(fileName))
+        try:
+            skyhookfilecrypt.encryptFile(fileName, tmpPath, bytes(password, "ascii"))
+        except:
+            os.remove(tmpPath)
+            return(2)
+        os.chdir(tmpDir)
+        print("[+] Uploading {}".format(fileName))
+        try:
+            result = peer.add(aesName)
+            os.chdir(currentDir)
+        except:
+            os.chdir(currentDir)
+            os.remove(tmpPath)
+            return(3)
+        now = datetime.now()
+        currentDate = now.strftime("%d/%m/%Y-%H:%M:%S")
+        print("[+] Adding entry to history")
+        res = skyhookDb.addToHistory(fileName, result["Hash"], password, currentDate)
+        if res == 0:
+            pass
+        else:
+            os.remove(tmpPath)
+            return(4)
+        os.remove(tmpPath)
+        return(0)
+
+def downloadFile(fileHash):
+    currentDir = os.getcwd()
+    fileName, password = skyhookDb.getEntry(fileHash)
+    if fileName == 1 and password == 1:
+        return(1)
+    saveFile = "{}/{}".format(currentDir, fileName)
+    os.chdir(tmpDir)
+    print("[+] Downloading {}".format(fileName))
     try:
-        os.makedirs(skyhookConfig.tmpDir, exist_ok=True)
+        peer.get(fileHash)
     except:
-        print("[!] Could not create temporary directory {}".format(skyhookConfig.tmpDir))
-        exit()
-    
-if not hasattr(skyhookConfig, 'skyhookDir'):
-    print("[!] Skyhook directory is not defined\nPlease modify {}".format(skyhookConfig.__file__))
-    exit()
-    
-if not isinstance(skyhookConfig.skyhookDir, str):
-    print("[!] Skyhook directory variable is not a string\nPlease modify {}".format(skyhookConfig.__file__))
-    exit()
-
-if not os.path.isabs(skyhookConfig.skyhookDir):
-    print("[!] Skyhook directory {} is not on an absolute path".format(skyhookConfig.skyhookDir))
-    exit()
-        
-if not (os.access(skyhookConfig.skyhookDir, os.W_OK) and os.access(skyhookConfig.skyhookDir, os.R_OK)):
-    print("[!] Cannot read or write to and from {}".format(skyhookConfig.skyhookDir))
-    exit()
-    
-if not os.path.isdir(skyhookConfig.skyhookDir):
+        os.chdir(currentDir)
+        return(2)
+    print("[+] Decrypting {}".format(fileName))
     try:
-        os.makedirs(skyhookConfig.skyhookDir, exist_ok=True)
+        skyhookfilecrypt.decryptFile(fileHash, saveFile, bytes(password, "ascii"))
     except:
-        print("[!] Could not create Skyhook directory {}".format(skyhookConfig.skyhookDir))
-        exit()
+        os.remove(fileHash)
+        os.chdir(currentDir)
+        return(3)
+    os.remove(fileHash)
+    os.chdir(currentDir)
+    return(fileName)
