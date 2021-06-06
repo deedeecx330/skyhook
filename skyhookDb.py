@@ -98,11 +98,11 @@ def deleteItem(identifier):
             return(2)
 
 def getEntry(fileHash):
-    fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
-    if fileName == None or password == None:
+    try:
+        fileName, password = cursor.execute("SELECT DISTINCT name, key FROM history WHERE hash = ?", (fileHash,)).fetchone()
+    except:
         return(1, 1)
-    else:
-        return(fileName, password)
+    return(fileName, password)
 
 def addToHistory(name, hash, key, date):
     try:
